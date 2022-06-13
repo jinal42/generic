@@ -1,5 +1,3 @@
-from xml.etree.ElementInclude import include
-from django.db import router
 from django.urls import path
 from .views import StudListCreate, UserDetailAPI,RegisterUserAPIView
 from .views import CustomList,CustomCreate,CustomRetrive,CustomDestory,CustomUpdate
@@ -31,8 +29,6 @@ urlpatterns = [
   path('ConRU/<int:pk>',StudRU.as_view()),
   path('ConRD/<int:pk>',StudRD.as_view()),
   path('ConRUD/<int:pk>',StudRUD.as_view()),
-
-
 
 
 

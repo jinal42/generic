@@ -1,4 +1,3 @@
-
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,7 +22,8 @@ from rest_framework.generics import ListCreateAPIView,RetrieveUpdateAPIView,Retr
 from rest_framework import viewsets
 from rest_framework import status
 
-
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated,AllowAny,IsAdminUser
 
 # Class based view to Get User Details using Token Authentication
 
@@ -150,9 +150,34 @@ class StudRUD(RetrieveUpdateDestroyAPIView):
    serializer_class=UserSerializer
 
 
-#Viewsets
+#ViewSets
 class StudViewSet(viewsets.ViewSet):
   def list(self,req):
-   u=User.objects.all()
-   serializers=UserSerializer(u,many=True)
+   queryset=User.objects.all()
+   serializers=UserSerializer(queryset,many=True)
    return Response(serializers.data)
+
+# Model ViewSet
+class StudModelViewSet(viewsets.ModelViewSet):
+   queryset=User.objects.all()
+   serializer_class=UserSerializer
+
+#ReadOnly Model ViewSet 
+class StudReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
+   queryset=User.objects.all()
+   serializer_class=UserSerializer
+
+class Cust(viewsets.ModelViewSet):
+   queryset=CustomUser.objects.all()
+   serializer_class=TodoSerializer
+   authentication_classes=[BasicAuthentication]
+   # permission_classes=[IsAuthenticated]
+   permission_classes=[IsAdminUser]
+
+
+class Cust1(viewsets.ModelViewSet):
+   queryset=CustomUser.objects.all()
+   serializer_class=TodoSerializer
+   authentication_classes=[BasicAuthentication]
+   # permission_classes=[IsAuthenticated]
+   permission_classes=[AllowAny]
